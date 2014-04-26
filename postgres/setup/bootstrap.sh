@@ -88,6 +88,9 @@ cat << EOF | su - postgres -c psql
 -- Create the database user:
 CREATE USER $APP_DB_USER WITH PASSWORD '$APP_DB_PASS';
 
+-- Make user a superuser
+ALTER USER $APP_DB_USER WITH SUPERUSER;
+
 -- Make Template1 ordinary:
 UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
 
