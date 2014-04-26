@@ -86,16 +86,16 @@ cat << EOF | su - postgres -c psql
 -- Create the database user:
 CREATE USER $APP_DB_USER WITH PASSWORD '$APP_DB_PASS';
 
---- Make Template1 ordinary:
+-- Make Template1 ordinary:
 UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
 
---- Drop Template1:
+-- Drop Template1:
 DROP DATABASE template1;
 
---- Create a new database from template0 with UTF-8 encoding:
+-- Create a new database from template0 with UTF-8 encoding:
 CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';
 
---- Make the database into Template1:
+-- Make the database into Template1:
 UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';
 
 -- Create the database:
