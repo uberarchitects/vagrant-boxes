@@ -38,6 +38,12 @@ print_db_usage () {
 }
 
 export DEBIAN_FRONTEND=noninteractive
+export LANGUAGE="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+locale-gen en_US.UTF-8
+update-locale LANG=en_US.UTF-8
 
 PROVISIONED_ON=/etc/vm_provision_on_timestamp
 if [ -f "$PROVISIONED_ON" ]
@@ -62,10 +68,6 @@ fi
 # Update package list and upgrade all packages
 apt-get update
 apt-get -y upgrade
-
-locale-gen en_US.UTF-8
-update-locale LANG=en_US.UTF-8 LC_MESSAGES=POSIX
-export LC_ALL="en_US.UTF-8"
 
 apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION"
 
@@ -93,7 +95,7 @@ UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
 DROP DATABASE template1;
 
 -- Create a new database from template0 with UTF-8 encoding:
-CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';
+CREATE DATABASE template1 WITH owner = postgres ENCODING = 'UTF-8' lc_collate = 'en_US.utf8' lc_ctype = 'en_US.utf8' template template0;
 
 -- Make the database into Template1:
 UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';
